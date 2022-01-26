@@ -1,3 +1,7 @@
 #+title: BIBREAD
 
 Point your browser at =index.html=.
+
+[[https://rawcdn.githack.com/kcf-jackson/bibread/c688ecee8bde408ebbb865cea761afcee092a268/index.html][Production site]] - Files are served via CloudFlare's CDN. Free service, no uptime or support guarantees.
+
+[[https://raw.githack.com/kcf-jackson/bibread/master/index.html][Development site]] - New changes will be reflected within minutes.

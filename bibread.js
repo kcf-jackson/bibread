@@ -51,8 +51,8 @@ const plotSpec = (x) => {
             }
         ],
         "title": {
-            "text": x.title,
-            "subtitle": x.date,
+            "text": x.config.title,
+            "subtitle": x.config.date,
             "align": "left",
             "anchor": "start",
             "fontSize": 20,
@@ -66,12 +66,13 @@ const plotSpec = (x) => {
 const doIO = () => {
     var inputData = document.getElementById("input").value;
     var currentDate = new Date();
+    var plotConfig = {title: document.getElementById("plot-title").value,
+                      date: currentDate.toDateString()};
     R.compose(R.partial(vegaEmbed, ['#vis']),
               (d) => {
                   return plotSpec(
                       {data: d,
-                       title: "Journal Frequency",
-                       date: currentDate.toDateString()}
+                       config: plotConfig}
                   );
               },
               summariseBibTex,

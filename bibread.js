@@ -1,11 +1,13 @@
 const parseBibTex = (x) => {
-    return bibtexParse.toJSON(x).map((x) => x.entryTags.JOURNAL);
+    x.data = bibtexParse.toJSON(x.data).map((x) => x.entryTags.JOURNAL);
+    return x;
 };
 
 const summariseBibTex = (x) => {
-    const counts = R.countBy(R.identity)(x.filter(R.identity));
+    const counts = R.countBy(R.identity)(x.data.filter(R.identity));
     const valuePairs = R.map((k) => ({journal: k, count: counts[k]}), R.keys(counts));
-    return R.take(20, R.reverse(R.sortBy((x) => x.count, valuePairs)));
+    x.data = R.take(x.config.numEntries, R.reverse(R.sortBy((x) => x.count, valuePairs)));
+    return x;
 };
 
 const plotSpec = (x) => {
@@ -38,13 +40,13 @@ const plotSpec = (x) => {
             {
                 "mark": {
                     "type": "bar",
-                    "color": "darkgray"
+                    "color": x.config.colours.bar
                 }
             },
             {
                 "mark": {
                     "type": "text",
-                    "color": "white",
+                    "color": x.config.colours.annotations,
                     "dx": 15
                 },
                 "encoding": {"x": {"value": 0}}
@@ -64,19 +66,17 @@ const plotSpec = (x) => {
 };
 
 const doIO = () => {
-    var inputData = document.getElementById("input").value;
     var currentDate = new Date();
-    var plotConfig = {title: document.getElementById("plot-title").value,
-                      date: currentDate.toDateString()};
+    var state = {data: document.getElementById("input").value,
+                 config: {title: document.getElementById("plot-title").value,
+                          numEntries: parseInt(document.getElementById("plot-num").value),
+                          colours: {bar: document.getElementById("plot-bar-col").value,
+                                    annotations: document.getElementById("plot-ann-col").value},
+                          date: currentDate.toDateString()}};
     R.compose(R.partial(vegaEmbed, ['#vis']),
-              (d) => {
-                  return plotSpec(
-                      {data: d,
-                       config: plotConfig}
-                  );
-              },
+              plotSpec,
               summariseBibTex,
-              parseBibTex)(inputData);
+              parseBibTex)(state);
 };
 
 document.getElementById("input").value = '@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={A}} \n@article{foo, journal={A}}\n@article{foo, journal={A}} \n@article{foo, journal={B}}\n@article{foo, journal={C}} \n@article{foo, journal={D}}\n@article{foo, journal={A}} \n@article{foo, journal={B}}\n@article{foo, journal={F}} \n@article{foo, journal={E}}'

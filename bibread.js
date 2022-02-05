@@ -68,9 +68,12 @@ const doIO = () => {
     var currentDate = new Date();
     R.compose(R.partial(vegaEmbed, ['#vis']),
               (d) => {
-                  return plotSpec({data: d,
-                                   title: "Journal Frequency",
-                                   date:currentDate.toDateString()})},
+                  return plotSpec(
+                      {data: d,
+                       title: "Journal Frequency",
+                       date: currentDate.toDateString()}
+                  );
+              },
               summariseBibTex,
               parseBibTex)(inputData);
 };
@@ -78,3 +81,14 @@ const doIO = () => {
 document.getElementById("input").value = '@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={A}} \n@article{foo, journal={A}}\n@article{foo, journal={A}} \n@article{foo, journal={B}}\n@article{foo, journal={C}} \n@article{foo, journal={D}}\n@article{foo, journal={A}} \n@article{foo, journal={B}}\n@article{foo, journal={F}} \n@article{foo, journal={E}}'
 
 document.getElementById("submit").onclick = doIO;
+
+// This section toggles the display of the visualisation configuration.
+var coll = document.getElementsByClassName("collapsible")[0];
+coll.addEventListener("click", () => {
+    var content = coll.nextElementSibling;
+    if (content.style.display === "block") {
+        content.style.display = "none";
+    } else {
+        content.style.display = "block";
+    };
+});

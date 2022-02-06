@@ -79,7 +79,30 @@ const doIO = () => {
               parseBibTex)(state);
 };
 
-document.getElementById("input").value = '@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={B}}\n@article{foo, journal={A}} \n@article{foo, journal={A}}\n@article{foo, journal={A}} \n@article{foo, journal={B}}\n@article{foo, journal={C}} \n@article{foo, journal={D}}\n@article{foo, journal={A}} \n@article{foo, journal={B}}\n@article{foo, journal={F}} \n@article{foo, journal={E}}'
+const demoJournals = ["Pandemics",
+                      "Proceedings of the Royal People",
+                      "PLOS Potatoes",
+                      "Mother Nature",
+                      "Compartment",
+                      "Research",
+                      "The Lancet Alternative Medicine",
+                      "Systematic Stuff",
+                      "Journal of Theoretical Theory",
+                      "dLife"];
+
+const randomEntry = () => {
+    const journal = demoJournals[Math.floor(Math.random() * 10)];
+    return `@article{key, journal={${journal}}}`;
+};
+
+const randomData = () => {
+    var foo = R.map((x) => randomEntry(), R.range(0,50));
+    return R.reduce((s, e) => {
+        return (s + '\n' + e);
+    }, '%% PASTE YOUR BIBTEX HERE! %%\n', foo);
+};
+
+document.getElementById("input").value = randomData();
 
 document.getElementById("submit").onclick = doIO;
 

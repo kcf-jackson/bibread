@@ -1,0 +1,18 @@
+{
+  "name": "bibread",
+  "version": "0.1.0",
+  "description": "explore your bibtex",
+  "main": "bibread.js",
+  "scripts": {
+    "compile": "./node_modules/typescript/bin/tsc --target es5 bibread.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "bibtex-parser-js": "^0.0.2",
+    "ramda": "^0.28.0"
+  }
+}
